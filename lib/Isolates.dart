@@ -21,10 +21,12 @@ Future<String> getCookie(String username, String password, String token) async {
   return netdutyCookie;
 }
 
-List<Map<String, String>> getRolesData(Document document) {
+List<Map<String, String>> getRolesData(Document document,
+    {int daysInMonth = 0}) {
   List<Map<String, String>> rolesData = [{}];
-  int daysInMonth =
-      new DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day;
+  if (daysInMonth == 0)
+    daysInMonth =
+        new DateTime(DateTime.now().year, DateTime.now().month + 1, 0).day;
 
   for (int day = 1; day <= daysInMonth; day++) {
     Map<String, String> roles = CalendarModel.getRoles(day, document);
@@ -46,12 +48,14 @@ Future<Map<String, dynamic>> getNewMonth(List parameters) async {
   final Future<StreamedResponse> future =
       NetDutyAPI.getCalendarMonth(newDate.month, newDate.year, netdutyCookie);
   return future.then((StreamedResponse response) async {
+    int daysInMonth = new DateTime(newDate.year, newDate.month + 1, 0).day;
     final String responseOneStr = await response.stream.bytesToString();
     List<dynamic> jsonResponse = jsonDecode(responseOneStr);
     String calendarStr = jsonResponse[0]['calendar_section'];
     calendarStr.replaceAll("\\/", "/");
     Document monthData = CalendarModel.loadDocument(calendarStr);
-    List<Map<String, String>> rolesData = getRolesData(monthData);
+    List<Map<String, String>> rolesData =
+        getRolesData(monthData, daysInMonth: daysInMonth);
     bool allDays = newDate.month != DateTime.now().month;
     List<List<String>> calendarData =
         getCalendarData([monthData, userIdentity], allDays: allDays);
