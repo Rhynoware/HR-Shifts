@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.rhynoware.hr_shifts">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="HR Shifts"
         android:icon="@mipmap/ic_launcher">
