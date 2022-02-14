@@ -150,8 +150,6 @@ class _RolesScreenState extends State<RolesScreen> with WidgetsBindingObserver {
     final Future<http.StreamedResponse> future =
         NetDutyAPI.getCalendarData(username!, password!, widget.loginToken);
     future.then((response) async {
-      Navigator.of(context).pop();
-
       final String responseStr = await response.stream.bytesToString();
       file.writeAsString(responseStr);
 
