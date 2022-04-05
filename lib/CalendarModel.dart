@@ -116,6 +116,7 @@ List<String> getShifts(Document useDocument) {
       .querySelector(".box_display_myshifts_box")!
       .querySelector(".red_table")!;
   shifts = shiftsBox.innerHtml.trim().replaceAll("\n", "").split("<br>");
+  shifts.removeWhere((element) => element.contains("Check"));
   return shifts.sublist(1, shifts.length);
 }
 
