@@ -260,7 +260,13 @@ class _LoginFormState extends State<LoginForm> {
     final file = File(path);
     final String contents = await file.readAsString();
     var document = await compute(CalendarModel.loadDocument, contents);
-    String userIdentity = CalendarModel.getUserIdentity(document);
+    String userIdentity = "";
+    try {
+      userIdentity = CalendarModel.getUserIdentity(document);
+    } catch (e) {
+      Navigator.of(context).pop();
+      return;
+    }
     String rosterId = CalendarModel.getRosterId(document);
     List<Map<String, String>> rolesData =
         await compute(Isolates.getRolesData, document);

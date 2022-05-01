@@ -154,7 +154,14 @@ class _RolesScreenState extends State<RolesScreen> with WidgetsBindingObserver {
       file.writeAsString(responseStr);
 
       var document = await compute(CalendarModel.loadDocument, responseStr);
-      String userIdentity = CalendarModel.getUserIdentity(document);
+      String userIdentity = "";
+      try {
+        userIdentity = CalendarModel.getUserIdentity(document);
+      } catch (e) {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        return;
+      }
       List<Map<String, String>> newRolesData =
           await compute(Isolates.getRolesData, document);
       List<String> newShiftsData = CalendarModel.getShifts(document);

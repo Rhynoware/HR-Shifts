@@ -7,7 +7,10 @@ Document loadDocument(String contents) {
 }
 
 String getUserIdentity(Document document) {
-  Element label = document.querySelector("[id='login_label']")!;
+  Element? label = document.querySelector("[id='login_label']");
+  if (label == null) {
+    throw Exception();
+  }
   return label.innerHtml.trim();
 }
 
